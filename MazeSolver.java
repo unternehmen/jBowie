@@ -1,7 +1,7 @@
 /* Interface for the maze:
  * maze.getEntrance() -> int[3]
  * maze.getTileAt(int x, int y, int z) -> char
- * maze.findDisplacement() -> int  -- returns how much up or down you would go if you went "through"
+ * maze.findDisplacement(int x, int y, int z) -> int  -- returns how much up or down you would go if you went "through"
  * maze.getWidth() -> int
  * maze.getHeight() -> int
  */
