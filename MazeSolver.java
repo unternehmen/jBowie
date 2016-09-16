@@ -6,7 +6,7 @@
  * maze.getHeight() -> int
  */
 
-public class MazeSolver
+public class Solver
 {
     private Maze maze;
     private int pos[3];
