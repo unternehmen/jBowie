@@ -1,19 +1,16 @@
 /* Interface for the maze:
- * maze.enterMaze() -> int[2]
- * maze.tryNorth(int[3]) -> boolean
- * maze.trySouth(int[3]) -> boolean
- * maze.tryEast(int[3]) -> boolean
- * maze.tryWest(int[3]) -> boolean
- * maze.tryThrough(int[3]) -> boolean
+ * maze.getEntrance() -> int[3]
+ * maze.getTileAt(int x, int y, int z) -> char
  * maze.findDisplacement() -> int  -- returns how much up or down you would go if you went "through"
- * maze.isSolved() -> boolean
  * maze.getWidth() -> int
  * maze.getHeight() -> int
  */
 
 public class MazeSolver
 {
-    Maze maze;
+    private Maze maze;
+    private int pos[3];
+    boolean solved;
     
     private static boolean goNorth() {
         if (pos[1] > 0 && maze.getTileAt(pos[0], pos[1] - 1, pos[2]) != '#') {
@@ -50,17 +47,38 @@ public class MazeSolver
     }
     
     private static boolean goThrough() {
-        if (pos[2] > 0 && maze.getTileAt(pos[0] - 1, pos[1], pos[2]) != '#') {
+        if (pos[2] > 0 && maze.findDisplacement(pos[0], pos[1], pos[2]) != '#') {
             pos[0]--;
             return true;
         }
     }
     
+    /*
+    private static int[] makePoint(int x, int y, int z) {
+        int[] pt = new int[3];
+        
+        pt[0] = x;
+        pt[1] = y;
+        pt[2] = z;
+        
+        return pt;
+    }
+    */
+    
     public Solver(Maze maze) {
-        this.maze.enterMaze();
+        this.pos = maze.getEntrance();
+        this.maze = maze;
+        this.solved = false;
     }
     
     public int[] next() {
-        
+        /* If we are standing on the victory tile, the maze is solved.  Return null and set solved to true. */
+        /* Else: If there are unexplored paths from the current position, follow one of them and return that position. */
+        /* Else: If there are no unexplored paths, go back to the previous position and return that. */
+        /* Else: If there is no previous position, the maze is impossible to solve.  Return null. */
+    }
+    
+    public boolean isSolved() {
+        return solved;
     }
 }
