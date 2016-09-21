@@ -1,1 +1,0 @@
-/* A data structure for holding a maze. */
