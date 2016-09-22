@@ -1,15 +1,5 @@
 package jbowie;
 
-/* A data structure for holding a maze. */
-
-/* Interface for the maze:
- * OKAY maze.getEntrance() -> int[3]
- * OKAY maze.getTileAt(int x, int y, int z) -> char
- * maze.findDisplacements(int x, int y, int z) -> int[] -- returns the offsets in depth which stairs and portals would provide from the location.
- * OKAY maze.getWidth() -> int
- * OKAY maze.getHeight() -> int
- */
-
 import java.util.LinkedList;
 
 class Maze {
@@ -53,10 +43,19 @@ class Maze {
         return null;
     }
 
-    /* findDisplacements(int, int, int) -> int[]
-     * On a stairs or portal tile, it returns how far up or down
-     * a maze explorer would go if they went "through" that tile.
-     * On any other tile, it returns 0. */
+    /**
+     * Returns possible up-or-down movements from the selected tile.
+     * On a stairs or portal tile, it returns a list of offsets
+     * from the current depth level which are accessible to an
+     * explorer.  For example, a stairs tile with stairs above
+     * it and below it would return the array {-1, 1}.
+     * If the given position is not a stairs or portal tile, an
+     * empty list is returned.
+     * @param  x the column of the tile
+     * @param  y the row of the tile
+     * @param  z the depth of the tile
+     * @return a list of offsets or an empty list
+     */
     public int[] findDisplacements(int x, int y, int z) {
         int i;
         LinkedList<Object> offsets;
@@ -105,6 +104,13 @@ class Maze {
         return offsetsAsInts;
     }
 
+    /**
+     * Returns whether the selected tile is a victory tile.
+     * @param x the column of the tile
+     * @param y the row of the tile
+     * @param z the depth of the tile
+     * @return whether the tile is a victory tile
+     */
     public boolean isVictoryTile(int x, int y, int z) {
         return data[z][y][x] == '*';
     }
