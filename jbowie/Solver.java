@@ -89,6 +89,13 @@ public class Solver
         }
     }
     
+    /**
+     * Steps forward in the maze and returns the new position.
+     * If there is no next position, null is returned and the
+     * maze is considered either solved or impossible to solve.
+     * @return the new position or null
+     * @see    isSolved
+     */
     public int[] next() {
         int[] offsets;
 
@@ -135,7 +142,14 @@ public class Solver
             return pos;
         }
     }
-    
+
+    /**
+     * Returns whether the maze has been solved.
+     * If the solver has been completed the maze and found the victory
+     * tile, true is returned.  Otherwise, false is returned.
+     * @return whether the maze has been solved.
+     * @see    next
+     */
     public boolean isSolved() {
         return solved;
     }
