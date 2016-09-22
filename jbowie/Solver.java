@@ -11,10 +11,12 @@ public class Solver
     boolean solved;
 
     private boolean tryNorth() {
+        System.out.println("Trying north...");
+
         if (pos[1] > 0 &&
             !explored[pos[2]][pos[1] - 1][pos[0]] &&
             maze.getTileAt(pos[0], pos[1] - 1, pos[2]) != '#') {
-            trail.push(pos);
+            trail.push(pos.clone());
             pos[1] -= 1;
             return true;
         }
@@ -23,10 +25,12 @@ public class Solver
     }
 
     private boolean tryWest() {
+        System.out.println("Trying west...");
+
         if (pos[0] > 0 &&
             !explored[pos[2]][pos[1]][pos[0] - 1] &&
             maze.getTileAt(pos[0] - 1, pos[1], pos[2]) != '#') {
-            trail.push(pos);
+            trail.push(pos.clone());
             pos[0] -= 1;
             return true;
         }
@@ -35,10 +39,12 @@ public class Solver
     }
 
     private boolean tryEast() {
+        System.out.println("Trying east...");
+
         if (pos[0] < maze.getWidth() - 1 &&
             !explored[pos[2]][pos[1]][pos[0] + 1] &&
             maze.getTileAt(pos[0] + 1, pos[1], pos[2]) != '#') {
-            trail.push(pos);
+            trail.push(pos.clone());
             pos[0] += 1;
             return true;
         }
@@ -47,10 +53,12 @@ public class Solver
     }
 
     private boolean trySouth() {
+        System.out.println("Trying south...");
+
         if (pos[0] < maze.getHeight() - 1 &&
             !explored[pos[2]][pos[1] + 1][pos[0]] &&
             maze.getTileAt(pos[0], pos[1] + 1, pos[2]) != '#') {
-            trail.push(pos);
+            trail.push(pos.clone());
             pos[1] += 1;
             return true;
         }
@@ -101,9 +109,11 @@ public class Solver
 
                 offsets = maze.findDisplacements(pos[0], pos[1], pos[2]);
 
+                System.out.println("There are " + offsets.length + " z-ways.");
                 for (int i = 0; i < offsets.length; i++) {
+                    System.out.println("  Trying one...");
                     if (!explored[pos[2] + offsets[i]][pos[1]][pos[0]]) {
-                        trail.push(pos);
+                        trail.push(pos.clone());
                         pos[2] += offsets[i];
                         return pos;
                     }
@@ -113,6 +123,7 @@ public class Solver
 
                 if (!trail.empty()) {
                     /* Go back to the previous position and return that. */
+                    System.out.println("Rewinding...");
                     pos = trail.pop();
                     return pos;
                 } else {
