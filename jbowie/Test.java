@@ -1,4 +1,6 @@
-package jbowie;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
 
 public class Test {
     public static void main(String[] args) {
@@ -8,6 +10,27 @@ public class Test {
 
 /* Size: w: 25, h: 25, d: 10 */
 
+
+
+       
+        /*
+
+        pos = solver.next();
+        while (pos != null) {
+            System.out.println("Step (" + pos[0] + " " + pos[1] + " " + pos[2] + ")");
+            pos = solver.next();
+        }
+
+        if (solver.isSolved()) {
+            System.out.println("Solved");
+        } else {
+            System.out.println("Impossible");
+        }
+        
+        */
+       
+       SwingUtilities.invokeLater(new Runnable() {
+           public void run() {
 char[][][] map = {
 {
 {
@@ -530,39 +553,16 @@ char[][][] map = {
 '#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}
 }
 };
-
-        maze = new Maze(25, 25, 10, map);
-        pos = maze.getEntrance();
-        System.out.println(pos[0] + " " + pos[1] + " " + pos[2]);
-
-        System.out.println("Tile at (3, 2, 0): " + maze.getTileAt(3, 2, 0));
-        System.out.println("Tile at (3, 2, 100): " + maze.getTileAt(3, 2, 100));
-
-        System.out.println("Following the through-tile at (1, 2, 0):");
-        System.out.println("  Tile type: " + maze.getTileAt(1, 2, 0));
-        System.out.print("  Leads to offsets: ");
-
-        offsets = maze.findDisplacements(1, 2, 0);
-        for (int i = 0; i < offsets.length; i++) {
-            System.out.print(offsets[i]);
-            if (i != offsets.length - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println();
-
-        Solver solver = new Solver(maze);
-
-        pos = solver.next();
-        while (pos != null) {
-            System.out.println("Step (" + pos[0] + " " + pos[1] + " " + pos[2] + ")");
-            pos = solver.next();
-        }
-
-        if (solver.isSolved()) {
-            System.out.println("Solved");
-        } else {
-            System.out.println("Impossible");
-        }
+               Maze maze = new Maze(25, 25, 10, map);
+               Solver solver = new Solver(maze);
+               GUI gui = new GUI(solver);
+               JFrame frame = new JFrame();
+               
+               frame.getContentPane().setPreferredSize(new Dimension(640, 280));
+               frame.add(gui);
+               frame.pack();
+               frame.setVisible(true);
+           }
+       });
     }
 }
