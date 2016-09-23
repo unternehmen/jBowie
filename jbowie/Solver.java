@@ -89,6 +89,10 @@ public class Solver
         }
     }
     
+    public int[] getLastPosition() {
+        return pos;
+    }
+    
     /**
      * Steps forward in the maze and returns the new position.
      * If there is no next position, null is returned and the

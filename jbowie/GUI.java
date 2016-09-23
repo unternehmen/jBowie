@@ -1,14 +1,19 @@
+ 
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GUI extends javax.swing.JPanel {
     Timer timer;
     int[] pos;
-    Solver solver;
+    private Solver solver;
+    private Maze maze;
     
     /**
      * Creates new form GUI
      */
-    public GUI(Solver solver) {
+    public GUI() {
+        solver = null;
         timer = new Timer(1000, new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pos = solver.next();
@@ -56,7 +61,7 @@ public class GUI extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel1.setText("Status: ");
+        jLabel1.setText("Status: No maze.");
 
         jButton1.setText("Load");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +71,11 @@ public class GUI extends javax.swing.JPanel {
         });
 
         jButton2.setText("Start");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("* - Victory");
 
@@ -138,12 +148,48 @@ public class GUI extends javax.swing.JPanel {
         );
     }// </editor-fold>                        
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-    }                                        
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        Loader loader;
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text files", "txt");
+        
+        switch (chooser.showOpenDialog(this)) {
+        case JFileChooser.APPROVE_OPTION:
+            loader = new Loader(chooser.getSelectedFile().getAbsolutePath());
+            maze = loader.loadToMaze();
+            if (maze == null) {
+                jLabel1.setText("Status: Maze could not be loaded.");
+            } else {
+                jLabel1.setText("Status: Maze loaded.");
+                
+                /*
+                int[] pos = solver.next();
+                while (pos != null) {
+                    pos = solver.next();
+                }
+                */
+            }
+            break;
+        default:
+            break;
+        }
+    }              
 
-    private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {                                      
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Start solver
+        solver = new Solver(maze);
+    }
+
+    private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {  
+        try {
         timer.setDelay(jSlider1.getValue());
+        } catch (OutOfMemoryError e) {
+            jLabel1.setText("Status: Out of memory!");
+        }
+        
+        if (solver.isSolved()) {
+            jLabel1.setText("Status: Finish Reachable at " + solver.getLastPosition());
+        }
     }                                     
 
 
